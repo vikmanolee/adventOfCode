@@ -11,7 +11,7 @@
             "preLaunchTask": "Build",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/bin/Debug/net5.0/adventOfCode.dll",
-            "args": ["8"],
+            "args": ["9"],
             "cwd": "${workspaceFolder}",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
