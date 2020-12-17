@@ -82,9 +82,11 @@ namespace AdventOfCode
             Console.WriteLine($"Day17:PartTwo: {answer}");
         }
 
-        char GetNewState((int, int, int) coordinates, Dictionary<(int, int, int), char> pocket)
+        bool IsActive(char cube) => cube == '#';
+
+        char GetNewState<T>(T coordinates, Dictionary<T, char> pocket)
         {
-            var ns = Neighbours(coordinates);
+            var ns = GetNeighbours(coordinates);
             var nearbyActive = ns.Select(d => GetCurrentCubeState(d, pocket)).Count(IsActive);
             if (IsActive(GetCurrentCubeState(coordinates, pocket)))
             {
@@ -96,21 +98,7 @@ namespace AdventOfCode
             }
         }
 
-        char GetNewState((int, int, int, int) coordinates, Dictionary<(int, int, int, int), char> pocket)
-        {
-            var ns = Neighbours(coordinates);
-            var nearbyActive = ns.Select(d => GetCurrentCubeState(d, pocket)).Count(IsActive);
-            if (IsActive(GetCurrentCubeState(coordinates, pocket)))
-            {
-                return (nearbyActive == 2 || nearbyActive == 3) ? '#' : '.';
-            }
-            else
-            {
-                return (nearbyActive == 3) ? '#' : '.';
-            }
-        }
-
-        char GetCurrentCubeState((int x, int y, int z) coordinates, Dictionary<(int, int, int), char> space)
+        char GetCurrentCubeState<T>(T coordinates, Dictionary<T, char> space)
         {
             if (space.TryGetValue(coordinates, out char state))
             {
@@ -122,16 +110,19 @@ namespace AdventOfCode
             }
         }
 
-        char GetCurrentCubeState((int x, int y, int z, int w) coordinates, Dictionary<(int, int, int, int), char> space)
+        T[] GetNeighbours<T>(T coord)
         {
-            if (space.TryGetValue(coordinates, out char state))
+            if (coord is ValueTuple<int, int, int> m)
             {
-                return state;
+                return (T[])(object)Neighbours(m);
             }
-            else
+
+            if (coord is ValueTuple<int, int, int, int> m2)
             {
-                return '.';
+                return (T[])(object)Neighbours(m2);
             }
+
+            return new T[] { };
         }
 
         (int, int, int)[] Neighbours((int xD, int yD, int zD) coord)
@@ -145,10 +136,8 @@ namespace AdventOfCode
                     for (int z = -1; z <= 1; z++)
                     {
                         if (x == 0 && y == 0 && z == 0)
-                        {
                             continue;
 
-                        }
                         n = n.Append((coord.xD + x, coord.yD + y, coord.zD + z)).ToArray();
                     }
                 }
@@ -169,10 +158,8 @@ namespace AdventOfCode
                         for (int z = -1; z <= 1; z++)
                         {
                             if (x == 0 && y == 0 && z == 0 && w == 0)
-                            {
                                 continue;
 
-                            }
                             n = n.Append((coord.xD + x, coord.yD + y, coord.zD + z, coord.wD + w)).ToArray();
                         }
                     }
@@ -180,7 +167,5 @@ namespace AdventOfCode
             }
             return n;
         }
-
-        bool IsActive(char cube) => cube == '#';
     }
 }
