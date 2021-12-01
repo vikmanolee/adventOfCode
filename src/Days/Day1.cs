@@ -16,7 +16,7 @@ namespace AdventOfCode
         {
             int answer = 0;
 
-            Console.WriteLine($"Day1:PartOne: {answer}");
+            Console.WriteLine($"Day1:PartTwo: {answer}");
         }
     }
 }
