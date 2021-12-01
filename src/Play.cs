@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 
 namespace AdventOfCode
 {
@@ -27,7 +28,7 @@ namespace AdventOfCode
             {
                 return Activator.CreateInstance(objectType) as IDay;
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return null;
             }
@@ -35,12 +36,13 @@ namespace AdventOfCode
 
         public static string GetInputText(int dayNumber)
         {
-            var fullFileName =  Path.Combine(Directory.GetCurrentDirectory(), inputsFolder, $"{dayNumber}.txt");
             try
             {
-                return System.IO.File.ReadAllText(fullFileName);
+                var root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                var fullFileName =  Path.Combine(root, inputsFolder, $"{dayNumber}.txt");
+                return File.ReadAllText(fullFileName);
             }
-            catch (System.IO.FileNotFoundException)
+            catch (Exception)
             {
                 return null;
             }
